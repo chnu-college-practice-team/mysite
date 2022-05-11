@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { signIn, signOut, useSession } from 'next-auth/react'
-
+import Nav from './NavBar/Nav'
 export default function Header() {
   const { data: session } = useSession()
 
   return (
     <header>
+      <Nav />
       <div>
         <p>
           {!session && (
@@ -67,6 +68,7 @@ export default function Header() {
           </li>
         </ul>
       </nav>
+     
     </header>
   )
 }
