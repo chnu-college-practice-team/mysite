@@ -18,8 +18,8 @@ const Nav = () => {
         <ion-icon name="logo-ionic"></ion-icon>
         </span>
         Designer
-      </div>
       
+      </div>
       <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer md:hidden'>
       <ion-icon name={open ? 'close':'menu'}></ion-icon>
       </div>

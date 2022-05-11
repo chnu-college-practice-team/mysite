@@ -6,7 +6,7 @@ const Button = (props) => {
     duration-500'>
       {props.children}
     </button>
-  )
+   )
 }
 
 export default Button

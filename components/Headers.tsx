@@ -7,7 +7,7 @@ export default function Header() {
 
   return (
     <header>
-      <Nav />
+      
       <div>
         <p>
           {!session && (
@@ -54,7 +54,7 @@ export default function Header() {
           )}
         </p>
       </div>
-      <nav>
+      <Nav/>
         <ul>
           <li>
             <Link href="/">
@@ -67,7 +67,7 @@ export default function Header() {
             </Link>
           </li>
         </ul>
-      </nav>
+      
      
     </header>
   )
