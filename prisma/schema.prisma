@@ -49,9 +49,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  @@map("users")
   comments Comment[]
   replies  Replie[]
+  @@map("users")
 }
 
 model Comment {
@@ -63,8 +63,8 @@ model Comment {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  replies Replie[]
   @@map("comments")
-  Replie Replie[]
 }
 
 model Replie {
