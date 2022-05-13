@@ -1,13 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import Nav from './NavBar/Nav'
 export default function Header() {
   const { data: session } = useSession()
 
   return (
     <header>
-      
       <div>
         <p>
           {!session && (
@@ -54,21 +52,18 @@ export default function Header() {
           )}
         </p>
       </div>
-      <Nav/>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/users/me">
-              <a>Me</a>
-            </Link>
-          </li>
-        </ul>
-      
-     
+      <ul>
+        <li>
+          <Link href="/">
+            <a>Home</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/users/me">
+            <a>Me</a>
+          </Link>
+        </li>
+      </ul>
     </header>
   )
 }
