@@ -1,12 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from 'lib/prisma'
-import type { Comment } from '@prisma/client'
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const commentId = req.query.id
+  const { commentId } = req.query
   if (req.method === 'GET') {
     handleGET(commentId, res)
   } else {

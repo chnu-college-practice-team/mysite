@@ -1,17 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from 'lib/prisma'
-import type { Comment } from '@prisma/client'
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<Comment>
+  res: NextApiResponse
 ) {
-  const userId = req.query.id
+  const { commentId, userId } = req.query
   const { text } = req.body
 
-  const result = await prisma.comment.create({
+  const result = await prisma.replie.create({
     data: {
       text: text + '',
+      comment: {
+        connect: {
+          id: commentId + '',
+        },
+      },
       user: {
         connect: {
           id: userId + '',
