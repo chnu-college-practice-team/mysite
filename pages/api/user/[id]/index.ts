@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from 'lib/prisma'
-import type { User } from '@prisma/client'
 
 export default async function handle(
   req: NextApiRequest,
-  res: NextApiResponse<User | null>
+  res: NextApiResponse
 ) {
   const userId = req.query.id.toString()
   if (req.method === 'GET') {
@@ -17,10 +16,10 @@ export default async function handle(
 }
 
 // GET /api/user/:id
-async function handleGET(postId: string, res: NextApiResponse<User | null>) {
+async function handleGET(userId, res) {
   const user = await prisma.user.findUnique({
     where: {
-      id: postId,
+      id: userId,
     },
   })
   res.json(user)
