@@ -5,6 +5,17 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method === 'POST') {
+    handlePOST(req, res)
+  } else {
+    throw new Error(
+      `The HTTP ${req.method} method is not supported at this route.`
+    )
+  }
+}
+
+// POST /api/comment/:commentId/user/:userId/replie/ 
+async function handlePOST(req, res) {
   const { commentId, userId } = req.query
   const { text } = req.body
 
