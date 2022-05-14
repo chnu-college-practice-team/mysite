@@ -6,7 +6,21 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse<Comment>
 ) {
-  const userId = req.query.id
+  if (req.method === "POST") {
+    handlePOST(req, res)
+  } else {
+    throw new Error(
+      `The HTTP ${req.method} method is not supported at this route.`
+    )
+  }
+}
+
+// POST /api/user/:id/comment
+async function handlePOST(
+  req: NextApiRequest,
+  res: NextApiResponse<Comment>
+) {
+  const { id } = req.query; 
   const { text } = req.body
 
   const result = await prisma.comment.create({
@@ -14,7 +28,7 @@ export default async function handle(
       text: text + '',
       user: {
         connect: {
-          id: userId + '',
+          id: id + '',
         },
       },
     },

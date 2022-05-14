@@ -16,11 +16,11 @@ export default async function handle(
 }
 
 // DELETE /api/comment/:commentId/user/:userId/replie/:replieId 
-async function handleDELETE(req, res) {
+async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
   const { replieId } = req.query;
   const replie = await prisma.replie.delete({
     where: {
-      id: replieId,
+      id: replieId + '',
     }
   })
   res.json(replie)

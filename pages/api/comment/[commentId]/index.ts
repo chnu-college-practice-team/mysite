@@ -5,11 +5,10 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { commentId } = req.query
   if (req.method === 'GET') {
-    handleGET(commentId, res)
+    handleGET(req, res)
   } else if (req.method === 'DELETE') {
-    handleDELETE(commentId, res)
+    handleDELETE(req, res)
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
@@ -18,10 +17,11 @@ export default async function handle(
 }
 
 // GET /api/comment/:commentId/
-async function handleGET(commentId, res) {
+async function handleGET(req: NextApiRequest, res: NextApiResponse) {
+  const { commentId } = req.query
   const comment = await prisma.comment.findUnique({
     where: {
-      id: commentId,
+      id: commentId + '',
     },
     select: {
       id: true,
@@ -39,10 +39,11 @@ async function handleGET(commentId, res) {
 }
 
 // DELETE /api/comment/:id
-async function handleDELETE(commentId, res) {
+async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
+  const { commentId } = req.query
   const comment = await prisma.comment.delete({
     where: {
-      id: commentId,
+      id: commentId + '',
     },
     select: {
       id: true,
