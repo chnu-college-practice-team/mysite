@@ -16,11 +16,11 @@ export default async function handle(
 
 // GET /api/user/:id
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  const { userId } = req.query;
+  const { id } = req.query;
   const user = await prisma.user.findUnique({
     where: {
-      id: userId + '',
+      id: id + '',
     },
   })
-  res.json(user)
+  return res.json(user)
 }

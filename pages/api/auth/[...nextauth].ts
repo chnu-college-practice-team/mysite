@@ -13,10 +13,10 @@ export default NextAuth({
         port: process.env.EMAIL_SERVER_PORT,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
@@ -27,9 +27,20 @@ export default NextAuth({
     colorScheme: 'auto',
   },
   callbacks: {
-    async jwt({ token }) {
-      token.userRole = 'user'
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid
+      }
+      return session
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id
+      }
       return token
     },
+  },
+  session: {
+    strategy: 'jwt',
   },
 })
