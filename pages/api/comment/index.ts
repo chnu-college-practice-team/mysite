@@ -16,6 +16,19 @@ export default async function handler(
 
 // GET /api/comments/
 async function handleGET(res: NextApiResponse) {
-  const comments = await prisma.comment.findMany({})
+    const comments = await prisma.comment.findMany({
+      select: {
+        id: true,
+        createadAt: true,
+        user: {
+            select: {
+                name: true,
+                image: true,
+            },
+        },
+        text: true,
+        updatedAt:true,
+      },
+    })
   return res.status(200).json({ comments })
 }
