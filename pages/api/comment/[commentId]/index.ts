@@ -26,6 +26,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
     select: {
       id: true,
       text: true,
+      createadAt: true,
       user: {
         select: {
           name: true,
