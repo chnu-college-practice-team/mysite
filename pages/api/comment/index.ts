@@ -30,5 +30,5 @@ async function handleGET(res: NextApiResponse) {
         updatedAt:true,
       },
     })
-  return res.status(200).json({ comments })
+  return res.status(200).json( comments )
 }
