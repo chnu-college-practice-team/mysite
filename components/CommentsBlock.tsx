@@ -30,7 +30,7 @@ export default function CommentsBlock() {
   }
 
   return (
-    <section className="min-w-screen relative flex items-center justify-center bg-white bg-gray-100 antialiased">
+    <section className="min-w-screen relative flex items-center justify-center  bg-gray-100 antialiased">
       <div className="container mx-auto px-0 sm:px-5">
         {data.comments &&
           data.comments.map((comment) => (
