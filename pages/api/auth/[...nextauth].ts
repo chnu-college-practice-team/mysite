@@ -27,13 +27,13 @@ export default NextAuth({
     colorScheme: 'auto',
   },
   callbacks: {
-    session: async ({ session, token }) => {
+    async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.uid
       }
       return session
     },
-    jwt: async ({ user, token }) => {
+    async jwt({ user, token }) {
       if (user) {
         token.uid = user.id
       }
