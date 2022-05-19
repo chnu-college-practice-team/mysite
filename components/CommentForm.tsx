@@ -60,7 +60,7 @@ export default function CommentForm({ replied, id, setOpened }: Props) {
             type="submit"
             className="w-1/2.5 my-3 self-end rounded-lg bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 px-5 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-red-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gradient-to-r"
           >
-            Send Comment
+            {replied ? "Send Reply" : "Send Comment"}
           </button>
         </div>
       </form>
