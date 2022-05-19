@@ -21,6 +21,7 @@ async function handleGET(res: NextApiResponse) {
       id: true,
       user: {
         select: {
+          id: true,
           name: true,
           image: true,
         },
@@ -32,6 +33,7 @@ async function handleGET(res: NextApiResponse) {
           updatedAt: true,
           user: {
             select: {
+              id: true,
               name: true,
               image: true,
             },

@@ -3,22 +3,23 @@ import fetcher from 'lib/fetcher'
 import Image from 'next/image'
 import CommentForm from './CommentForm'
 import { useState } from 'react'
+import Link from 'next/link'
+
+type User = {
+  id: string
+  name: string
+  image: string
+}
 
 type Reply = {
-  user: {
-    name: string
-    image: string
-  }
+  user: User
   updatedAt: Date
   id: string
   text: string
 }
 
 type Comment = {
-  user: {
-    name: string
-    image: string
-  }
+  user: User
   updatedAt: Date
   id: string
   text: string
@@ -65,18 +66,20 @@ const Comment = ({ data }: { data: Comment }) => {
   return (
     <div className="mx-auto w-full flex-col border-b-2 border-r-2 border-gray-200 bg-white py-4 sm:rounded-lg sm:px-4 sm:py-4 sm:shadow-sm md:w-2/3 md:px-4">
       <div className="flex flex-row">
-        <Image
-          src={data.user.image}
-          layout="fixed"
-          width={64}
-          height={64}
-          alt="profile photo"
-          className="rounded-full border-2 border-gray-300 object-cover"
-        />
+        <Link href={`/users/${data.user.id}`}>
+          <Image
+            src={data.user.image}
+            layout="fixed"
+            width={64}
+            height={64}
+            alt="profile photo"
+            className="rounded-full border-2 border-gray-300 object-cover"
+          />
+        </Link>
         <div className="mt-1 flex-col">
           <div className="flex flex-1 items-center px-4 font-bold leading-tight">
             <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
-              {data.user.name}
+              <Link href={`/users/${data.user.id}`}>{data.user.name}</Link>
             </span>
             <span className="ml-2 text-xs font-normal text-gray-500">
               {prettyTime}
@@ -117,18 +120,20 @@ const Reply = ({ data }: { data: Reply }) => {
   return (
     <>
       <div className="md-10 my-3 flex flex-row pt-1 md:ml-16">
-        <Image
-          src={data.user.image}
-          layout="fixed"
-          width={48}
-          height={48}
-          alt="profile photo"
-          className="rounded-full border-2 border-gray-300 object-cover"
-        />
+        <Link href={`/users/${data.user.id}`}>
+          <Image
+            src={data.user.image}
+            layout="fixed"
+            width={48}
+            height={48}
+            alt="profile photo"
+            className="rounded-full border-2 border-gray-300 object-cover"
+          />
+        </Link>
         <div className="mt-1 flex-col">
           <div className="flex flex-1 items-center px-4 font-bold leading-tight">
             <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
-              {data.user.name}
+              <Link href={`/users/${data.user.id}`}>{data.user.name}</Link>
             </span>
             <span className="ml-2 text-xs font-normal text-gray-500">
               {prettyTime}
