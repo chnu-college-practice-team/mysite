@@ -1538,7 +1538,7 @@ packages:
       jose: 4.8.1
       nodemailer: 6.7.5
       oauth: 0.9.15
-      openid-client: 5.1.5
+      openid-client: 5.1.6
       preact: 10.7.2
       preact-render-to-string: 5.2.0_preact@10.7.2
       react: 18.1.0
@@ -1690,8 +1690,8 @@ packages:
       wrappy: 1.0.2
     dev: true
 
-  /openid-client/5.1.5:
-    resolution: {integrity: sha512-m41p7V/iXyqc0WZeo20uwKk8NPDAtYd3JS0uWjttcqwvFo4YNYAKegMAMea1qG5RClddQ6rV9ec/TP6ZvsCrYw==}
+  /openid-client/5.1.6:
+    resolution: {integrity: sha512-HTFaXWdUHvLFw4GaEMgC0jXYBgpjgzQQNHW1pZsSqJorSgrXzxJ+4u/LWCGaClDEse5HLjXRV+zU5Bn3OefiZw==}
     engines: {node: ^12.19.0 || ^14.15.0 || ^16.13.0}
     dependencies:
       jose: 4.8.1
