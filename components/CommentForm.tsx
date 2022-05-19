@@ -1,14 +1,23 @@
 import { useSession } from 'next-auth/react'
-import { FormEvent, useState } from 'react'
+import { Dispatch, FormEvent, useState, SetStateAction } from 'react'
 
-export default function CommentForm() {
+type Props = {
+  replied?: boolean
+  setOpened?: Dispatch<SetStateAction<boolean>>
+  id?: string
+}
+
+export default function CommentForm({ replied, id, setOpened }: Props) {
   const [text, setText] = useState('')
   const { data } = useSession()
+  const href = replied
+    ? `/api/comment/${id}/user/${data?.user?.id}/replie`
+    : `/api/user/${data?.user?.id}/comment`
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    fetch(`/api/user/${data?.user?.id}/comment`, {
+    fetch(href, {
       method: 'POST',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -18,12 +27,20 @@ export default function CommentForm() {
     })
 
     setText('')
+    if (replied) {
+      setOpened(false)
+    }
   }
 
   return (
     data?.user && (
-      <form onSubmit={(e) => onSubmit(e)} className="mx-auto w-1/2">
-        <div className='flex flex-wrap flex-col'>
+      <form
+        onSubmit={(e) => {
+          onSubmit(e)
+        }}
+        className="mx-auto w-1/2"
+      >
+        <div className="flex flex-col flex-wrap">
           <label
             htmlFor="message"
             className="mb-2 block text-sm font-medium text-gray-900"
@@ -41,7 +58,7 @@ export default function CommentForm() {
           <button
             disabled={!text}
             type="submit"
-            className="w-1/2.5 self-end my-3 rounded-lg bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 px-5 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-red-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gradient-to-r"
+            className="w-1/2.5 my-3 self-end rounded-lg bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 px-5 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-red-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gradient-to-r"
           >
             Send Comment
           </button>

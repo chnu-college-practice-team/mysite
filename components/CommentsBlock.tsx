@@ -1,16 +1,28 @@
 import useSWR from 'swr'
 import fetcher from 'lib/fetcher'
 import Image from 'next/image'
+import CommentForm from './CommentForm'
+import { useState } from 'react'
+
+type Reply = {
+  user: {
+    name: string
+    image: string
+  }
+  updatedAt: Date
+  id: string
+  text: string
+}
 
 type Comment = {
   user: {
     name: string
     image: string
   }
+  updatedAt: Date
   id: string
   text: string
-  createdAt: string
-  updatedAt: string
+  replies: Reply[]
 }
 
 export default function CommentsBlock() {
@@ -42,10 +54,13 @@ export default function CommentsBlock() {
 }
 
 const Comment = ({ data }: { data: Comment }) => {
-  // get pretty time from updateAt in 24 hours format
+  const [opened, setOpened] = useState(false)
+
   const prettyTime = new Date(data.updatedAt).toLocaleTimeString('uk-UA', {
     timeStyle: 'short',
   })
+
+  const toggle = () => setOpened(!opened)
 
   return (
     <div className="mx-auto w-full flex-col border-b-2 border-r-2 border-gray-200 bg-white py-4 sm:rounded-lg sm:px-4 sm:py-4 sm:shadow-sm md:w-2/3 md:px-4">
@@ -60,15 +75,20 @@ const Comment = ({ data }: { data: Comment }) => {
         />
         <div className="mt-1 flex-col">
           <div className="flex flex-1 items-center px-4 font-bold leading-tight">
-            {data.user.name}
+            <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
+              {data.user.name}
+            </span>
             <span className="ml-2 text-xs font-normal text-gray-500">
               {prettyTime}
             </span>
           </div>
-          <div className="ml-2 flex-1 px-2 text-sm font-medium leading-loose text-gray-600">
+          <div className="ml-2 flex-1 px-2 text-sm font-medium leading-loose text-black">
             {data.text}
           </div>
-          <button className="flex-column ml-1 inline-flex items-center px-1 pt-2">
+          <button
+            className="flex-column ml-1 inline-flex items-center px-1 pt-2"
+            onClick={toggle}
+          >
             <svg
               className="ml-2 h-5 w-5 cursor-pointer fill-current text-gray-600 hover:text-gray-900"
               viewBox="0 0 95 78"
@@ -82,6 +102,43 @@ const Comment = ({ data }: { data: Comment }) => {
           </button>
         </div>
       </div>
+      {opened && <CommentForm replied id={data.id} setOpened={setOpened} />}
+      {data.replies &&
+        data.replies.map((reply) => <Reply data={reply} key={reply.id} />)}
     </div>
+  )
+}
+
+const Reply = ({ data }: { data: Reply }) => {
+  const prettyTime = new Date(data.updatedAt).toLocaleTimeString('uk-UA', {
+    timeStyle: 'short',
+  })
+
+  return (
+    <>
+      <div className="md-10 my-3 flex flex-row pt-1 md:ml-16">
+        <Image
+          src={data.user.image}
+          layout="fixed"
+          width={48}
+          height={48}
+          alt="profile photo"
+          className="rounded-full border-2 border-gray-300 object-cover"
+        />
+        <div className="mt-1 flex-col">
+          <div className="flex flex-1 items-center px-4 font-bold leading-tight">
+            <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
+              {data.user.name}
+            </span>
+            <span className="ml-2 text-xs font-normal text-gray-500">
+              {prettyTime}
+            </span>
+          </div>
+          <div className="ml-2 flex-1 px-2 text-sm font-medium leading-loose text-black">
+            {data.text}
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
