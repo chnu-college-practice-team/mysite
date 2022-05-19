@@ -19,11 +19,23 @@ async function handleGET(res: NextApiResponse) {
   const comments = await prisma.comment.findMany({
     select: {
       id: true,
-      createadAt: true,
       user: {
         select: {
           name: true,
           image: true,
+        },
+      },
+      replies: {
+        select: {
+          id: true,
+          text: true,
+          updatedAt: true,
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
         },
       },
       text: true,
