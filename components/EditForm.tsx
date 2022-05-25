@@ -1,8 +1,8 @@
-import { Dispatch, FormEvent, useState, SetStateAction } from 'react'
+import { Dispatch, useState, SetStateAction } from 'react'
 import type { Session } from 'next-auth'
 
 type Props = {
-  user: Session["user"]
+  user: Session['user']
   setOpened?: Dispatch<SetStateAction<boolean>>
 }
 

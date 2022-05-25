@@ -4,45 +4,39 @@ import Header from '../../../components/Headers'
 import Image from 'next/image'
 import { useState } from 'react'
 import EditForm from 'components/EditForm'
-
+import useRequireAuth from 'lib/useRequireAuth'
 
 const MePage: NextPage = () => {
   const [isChange, setIsChange] = useState(false)
-  const { data } = useSession()
+  const session = useRequireAuth()
 
   return (
     <>
       <Header />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      {data?.user && (
-        <>
-          <div className="flex flex-wrap">
-            {data.user.image && (
-              <Image
-                src={data.user.image}
-                width={50}
-                height={50}
-                alt="user image"
-              />
-            )}
-            <div className="mx-2 flex flex-col flex-wrap">
-              <span>{data.user.name}</span>
-              <span>{data.user.email}</span>
-            </div>
-          </div>
-          <button
-            disabled={isChange}
-            hidden={isChange}
-            className="focus:shadow-outline w-1/6 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-            onClick={() => setIsChange(true)}
-          >
-            Change
-          </button>
-          {isChange && (
-            <EditForm setOpened={setIsChange} user={data.user}/>
-          )}
-        </>
-      )}
+
+      <div className="flex flex-wrap">
+        {session.user.image && (
+          <Image
+            src={session.user.image}
+            width={50}
+            height={50}
+            alt="user image"
+          />
+        )}
+        <div className="mx-2 flex flex-col flex-wrap">
+          <span>{session.user.name}</span>
+          <span>{session.user.email}</span>
+        </div>
+      </div>
+      <button
+        disabled={isChange}
+        hidden={isChange}
+        className="focus:shadow-outline w-1/6 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        onClick={() => setIsChange(true)}
+      >
+        Change
+      </button>
+      {isChange && <EditForm setOpened={setIsChange} user={session.user} />}
     </>
   )
 }
