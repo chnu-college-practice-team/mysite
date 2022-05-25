@@ -1,19 +1,16 @@
 import { NextPage } from 'next'
-import { useSession } from 'next-auth/react'
-import Header from '../../../components/Headers'
 import Image from 'next/image'
 import { useState } from 'react'
 import EditForm from 'components/EditForm'
 import useRequireAuth from 'lib/useRequireAuth'
+import Layout from 'components/Layout'
 
 const MePage: NextPage = () => {
   const [isChange, setIsChange] = useState(false)
   const session = useRequireAuth()
 
   return (
-    <>
-      <Header />
-
+    <Layout>
       <div className="flex flex-wrap">
         {session.user.image && (
           <Image
@@ -37,7 +34,7 @@ const MePage: NextPage = () => {
         Change
       </button>
       {isChange && <EditForm setOpened={setIsChange} user={session.user} />}
-    </>
+    </Layout>
   )
 }
 

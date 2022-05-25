@@ -8,16 +8,13 @@ import useRequireAuth from 'lib/useRequireAuth'
 import { useData } from 'context/useData'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { users } = useData()
-
   const session = useRequireAuth()
-
   if (!session) return <>Loading...</>
 
   return (
     <>
       <Header />
-      <CommandPalette users={users} />
+      <CommandPalette />
       <main className="container">{children}</main>
     </>
   )

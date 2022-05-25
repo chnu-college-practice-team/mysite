@@ -1,20 +1,19 @@
-import Header from '../../components/Headers'
+import Layout from 'components/Layout'
 import Image from 'next/image'
 import { GetServerSideProps, NextPage } from 'next'
 import type { User } from '@prisma/client'
 
 const UserPage: NextPage<{ user: User }> = ({ user }) => {
   return (
-    <>
-      <Header />
+    <Layout>
       <div className="flex flex-wrap">
         <Image src={user.image} alt="profile" width={96} height={96} />
-        <div className='mx-2 flex flex-wrap flex-col'>
+        <div className="mx-2 flex flex-col flex-wrap">
           <span>{user.name}</span>
           <span>{user.email}</span>
         </div>
       </div>
-    </>
+    </Layout>
   )
 }
 
