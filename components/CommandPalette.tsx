@@ -44,7 +44,7 @@ export default function CommandPalette() {
           setIsOpen(false)
           router.push(`/users/${user.id}`)
         }}
-        value={users}
+        value={users.find((user) => user.id === router.query.id)}
       >
         <div className="flex items-center space-x-2 px-4">
           <SearchIcon className="h-6 w-6 text-gray-500" />
