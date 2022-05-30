@@ -1,3 +1,37 @@
 @tailwind base;
-@tailwind utilities;
 @tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Andada+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+@layer base {
+  body {
+    @apply bg-black;
+  }
+}
+
+@layer components {
+  .sidebar-icon {
+    @apply h-6 cursor-pointer text-[#808080];
+  }
+
+  .tag {
+    @apply rounded-xl border-2 border-[#484848] bg-[#282828] py-1.5 px-3 text-xs font-bold text-[#cecece];
+  }
+
+  .genre {
+    @apply cursor-default rounded-xl border border-[#484848] bg-[#101010] py-2.5 px-3.5 text-[11px] font-bold text-[#CECECE];
+  }
+
+  .btn {
+    @apply w-full rounded-2xl bg-[#1A1A1A] bg-opacity-80 py-3.5 px-4 text-[13px] font-bold text-[#CECECE] transition ease-out hover:bg-opacity-100;
+  }
+
+  .icon {
+    @apply transition-all duration-150 ease-out hover:scale-125;
+  }
+
+  .cropped-icon {
+    clip-path: inset(0 50% 0 0);
+  }
+}

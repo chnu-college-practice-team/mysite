@@ -1,52 +1,18 @@
-import useSWR from 'swr'
-import fetcher from 'lib/fetcher'
 import Image from 'next/image'
 import CommentForm from './CommentForm'
 import { useState } from 'react'
 import Link from 'next/link'
-
-type User = {
-  id: string
-  name: string
-  image: string
-}
-
-type Reply = {
-  user: User
-  updatedAt: Date
-  id: string
-  text: string
-}
-
-type Comment = {
-  user: User
-  updatedAt: Date
-  id: string
-  text: string
-  replies: Reply[]
-}
+import type { Reply } from 'lib/types'
+import { useData } from 'context/useData'
+import type { Comment } from 'lib/types'
 
 export default function CommentsBlock() {
-  const { data, error } = useSWR<{ comments: Comment[] }>(
-    '/api/comment',
-    fetcher,
-    {
-      refreshInterval: 1000,
-    }
-  )
-
-  if (error) return <>An error has occurred.</>
-  if (!data) return <>Loading...</>
-
-  if (data.comments) {
-    console.log(data.comments)
-  }
-
+  const { comments } = useData()
   return (
     <section className="min-w-screen relative flex items-center justify-center  bg-gray-100 antialiased">
       <div className="container mx-auto px-0 sm:px-5">
-        {data.comments &&
-          data.comments.map((comment) => (
+        {comments &&
+          comments.map((comment) => (
             <Comment key={comment.id} data={comment} />
           ))}
       </div>

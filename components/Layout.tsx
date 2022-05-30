@@ -1,23 +1,22 @@
 import React from 'react'
-import CommandPalette from './CommandPalette'
-import Header from './Headers'
-import useSWR from 'swr'
-import type { User } from '@prisma/client'
-import fetcher from 'lib/fetcher'
-import useRequireAuth from 'lib/useRequireAuth'
-import { useData } from 'context/useData'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
+import Loader from './Loader'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const session = useRequireAuth()
-  if (!session) return <>Loading...</>
+  const router = useRouter()
+  const { status, data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/auth/singin')
+    },
+  })
 
-  return (
-    <>
-      <Header />
-      <CommandPalette />
-      <main className="container">{children}</main>
-    </>
-  )
+  if (status === 'loading') {
+    return <Loader />
+  }
+
+  return <main className="container">{children}</main>
 }
 
 export default Layout
