@@ -4,6 +4,8 @@ import Image from 'next/image'
 import CommentForm from './CommentForm'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { Session } from 'next-auth'
 
 type User = {
   id: string
@@ -27,6 +29,7 @@ type Comment = {
 }
 
 export default function CommentsBlock() {
+  const { data: session } = useSession()
   const { data, error } = useSWR<{ comments: Comment[] }>(
     '/api/comment',
     fetcher,
@@ -47,14 +50,15 @@ export default function CommentsBlock() {
       <div className="container mx-auto px-0 sm:px-5">
         {data.comments &&
           data.comments.map((comment) => (
-            <Comment key={comment.id} data={comment} />
+            <Comment key={comment.id} data={comment} me={session}/>
           ))}
       </div>
     </section>
   )
 }
 
-const Comment = ({ data }: { data: Comment }) => {
+const Comment = ({ data, me }: { data: Comment, me: Session }) => {
+  const href = me.user.id === data.user.id ? '/users/me' : `/users/${data.user.id}`
   const [opened, setOpened] = useState(false)
 
   const prettyTime = new Date(data.updatedAt).toLocaleTimeString('uk-UA', {
@@ -79,7 +83,7 @@ const Comment = ({ data }: { data: Comment }) => {
         <div className="mt-1 flex-col">
           <div className="flex flex-1 items-center px-4 font-bold leading-tight">
             <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
-              <Link href={`/users/${data.user.id}`}>{data.user.name}</Link>
+              <Link href={href}>{data.user.name}</Link>
             </span>
             <span className="ml-2 text-xs font-normal text-gray-500">
               {prettyTime}
@@ -107,12 +111,13 @@ const Comment = ({ data }: { data: Comment }) => {
       </div>
       {opened && <CommentForm replied id={data.id} setOpened={setOpened} />}
       {data.replies &&
-        data.replies.map((reply) => <Reply data={reply} key={reply.id} />)}
+        data.replies.map((reply) => <Reply data={reply} key={reply.id} me={me}/>)}
     </div>
   )
 }
 
-const Reply = ({ data }: { data: Reply }) => {
+const Reply = ({ data, me }: { data: Reply, me: Sesssion }) => {
+  const href = me.user.id === data.user.id ? '/users/me' : `/users/${data.user.id}`
   const prettyTime = new Date(data.updatedAt).toLocaleTimeString('uk-UA', {
     timeStyle: 'short',
   })
@@ -120,7 +125,7 @@ const Reply = ({ data }: { data: Reply }) => {
   return (
     <>
       <div className="md-10 my-3 flex flex-row pt-1 md:ml-16">
-        <Link href={`/users/${data.user.id}`}>
+        <Link href={href}>
           <Image
             src={data.user.image}
             layout="fixed"
@@ -133,7 +138,7 @@ const Reply = ({ data }: { data: Reply }) => {
         <div className="mt-1 flex-col">
           <div className="flex flex-1 items-center px-4 font-bold leading-tight">
             <span className="bg-gradient-to-b from-[#0057b7] to-[#ffd700] bg-clip-text text-transparent">
-              <Link href={`/users/${data.user.id}`}>{data.user.name}</Link>
+              <Link href={href}>{data.user.name}</Link>
             </span>
             <span className="ml-2 text-xs font-normal text-gray-500">
               {prettyTime}
