@@ -6,7 +6,7 @@ const nextConfig = {
     outputStandalone: true,
   },
   images: {
-    domains: ['avatars.githubusercontent.com', 'media.giphy.com'],
+    domains: ['avatars.githubusercontent.com', 'media.giphy.com', 'owaurtouhnwwdwxvgaoy.supabase.co'],
   },
 }
 
