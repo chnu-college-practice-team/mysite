@@ -11,8 +11,5 @@ declare namespace NodeJS {
     EMAIL_SERVER_PASSWORD: string
     EMAIL_SERVER_USER: string
     EMAIL_FROM: string
-    CLOUDINARY_CLOUD_NAME: string
-    CLOUDINARY_API_KEY: string
-    CLOUDINARY_API_SECRET: string
   }
 }
