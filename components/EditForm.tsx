@@ -1,5 +1,6 @@
 import { Dispatch, useState, SetStateAction } from 'react'
 import type { Session } from 'next-auth'
+import { supabase } from 'lib/supabase'
 
 type Props = {
   user: Session['user']
@@ -8,10 +9,19 @@ type Props = {
 
 export default function EditForm({ user, setOpened }: Props) {
   const [name, setName] = useState(user.name)
-  const [image, setImage] = useState(user.image)
+  const [avatarFile, setAvatarFile] = useState<File | null>()
 
-  const onSubmit = () => {
-    fetch(`http://localhost:3000/api/user/${user.id}`, {
+  const onSubmit = async () => {
+    const timestamp = Date.now().toString()
+    const filename = `${user.id}_${timestamp}.${avatarFile.type
+      .split('/')
+      .pop()}`
+    const { data, error } = await supabase.storage
+      .from('avatars')
+      .upload(`public/${filename}`, avatarFile)
+    console.log({ data, error })
+    const image = `${process.env.SUPABASE_URL}/storage/v1/object/public/avatars/public/${filename}`
+    fetch(`/api/user/${user.id}`, {
       method: 'PUT',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -37,10 +47,10 @@ export default function EditForm({ user, setOpened }: Props) {
         <label htmlFor="image">New image </label>
         <input
           className="focus:shadow-outline w-1/6 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          type="text"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          name="image"
+          type="file"
+          accept="image/png, image/jpeg, image/gif"
+          onChange={(e) => setAvatarFile(e.target.files[0])}
+          name="avatar"
         />
         <button
           className="focus:shadow-outline w-1/6 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"

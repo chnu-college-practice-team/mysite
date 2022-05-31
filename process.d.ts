@@ -11,5 +11,7 @@ declare namespace NodeJS {
     EMAIL_SERVER_PASSWORD: string
     EMAIL_SERVER_USER: string
     EMAIL_FROM: string
+    SUPABASE_ANON_KEY: string
+    SUPABASE_URL: string
   }
 }

@@ -8,9 +8,8 @@ export default async function handle(
   if (req.method === 'GET') {
     handleGET(req, res)
   } else if (req.method === 'PUT') {
-    handlePUT(req,res)
-   }
-  else {
+    handlePUT(req, res)
+  } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
     )
@@ -19,7 +18,7 @@ export default async function handle(
 
 // GET /api/user/:id
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { id } = req.query
   const user = await prisma.user.findUnique({
     where: {
       id: id + '',
@@ -27,10 +26,11 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   })
   return res.json(user)
 }
+
 // PUT /api/user/id/
 async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query
-  const {image, name} = req.body
+  const { image, name } = req.body
   const user = await prisma.user.update({
     where: {
       id: id + '',
@@ -38,7 +38,7 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
     data: {
       name: name + '',
       image: image + '',
-    }
+    },
   })
   return res.json(user)
 }

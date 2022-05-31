@@ -7,12 +7,12 @@ import Layout from 'components/Layout'
 
 const MePage: NextPage = () => {
   const [isChange, setIsChange] = useState(false)
-  const session = useRequireAuth()
-
+  const session = useRequireAuth()  
+  
   return (
     <Layout>
       <div className="flex flex-wrap">
-        {session.user.image && (
+        {session?.user.image && (
           <Image
             src={session.user.image}
             width={50}
@@ -21,8 +21,8 @@ const MePage: NextPage = () => {
           />
         )}
         <div className="mx-2 flex flex-col flex-wrap">
-          <span>{session.user.name}</span>
-          <span>{session.user.email}</span>
+          <span>{session?.user.name}</span>
+          <span>{session?.user.email}</span>
         </div>
       </div>
       <button
