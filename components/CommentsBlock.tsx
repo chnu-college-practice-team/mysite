@@ -1,32 +1,14 @@
-import useSWR from 'swr'
-import fetcher from 'lib/fetcher'
 import Image from 'next/image'
 import CommentForm from './CommentForm'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
-
-type User = {
-  id: string
-  name: string
-  image: string
-}
-
-type Reply = {
-  user: User
-  updatedAt: Date
-  id: string
-  text: string
-}
-
-type Comment = {
-  user: User
-  updatedAt: Date
-  id: string
-  text: string
-  replies: Reply[]
-}
+import type { Reply } from 'lib/types'
+import fetcher from 'lib/fetcher'
+import { useData } from 'context/useData'
+import type { Comment } from 'lib/types'
+import useSWR from 'swr'
 
 export default function CommentsBlock() {
   const { data: session } = useSession()
@@ -41,16 +23,13 @@ export default function CommentsBlock() {
   if (error) return <>An error has occurred.</>
   if (!data) return <>Loading...</>
 
-  if (data.comments) {
-    console.log(data.comments)
-  }
-
+  const { comments } = useData()
   return (
     <section className="min-w-screen relative flex items-center justify-center  bg-gray-100 antialiased">
       <div className="container mx-auto px-0 sm:px-5">
-        {data.comments &&
-          data.comments.map((comment) => (
-            <Comment key={comment.id} data={comment} me={session}/>
+        {comments &&
+          comments.map((comment) => (
+            <Comment key={comment.id} data={comment} me={session} />
           ))}
       </div>
     </section>
@@ -116,7 +95,7 @@ const Comment = ({ data, me }: { data: Comment, me: Session }) => {
   )
 }
 
-const Reply = ({ data, me }: { data: Reply, me: Sesssion }) => {
+const Reply = ({ data, me }: { data: Reply, me: Session }) => {
   const href = me.user.id === data.user.id ? '/users/me' : `/users/${data.user.id}`
   const prettyTime = new Date(data.updatedAt).toLocaleTimeString('uk-UA', {
     timeStyle: 'short',

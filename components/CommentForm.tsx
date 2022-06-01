@@ -1,4 +1,4 @@
-import useRequireAuth from 'lib/useRequireAuth'
+import { useSession } from 'next-auth/react'
 import { Dispatch, FormEvent, useState, SetStateAction } from 'react'
 
 type Props = {
@@ -9,10 +9,12 @@ type Props = {
 
 export default function CommentForm({ replied, id, setOpened }: Props) {
   const [text, setText] = useState('')
-  const session = useRequireAuth()
+  const { data: session } = useSession()
+  const user = session?.user
+
   const href = replied
-    ? `/api/comment/${id}/user/${session.user.id}/replie`
-    : `/api/user/${session.user.id}/comment`
+    ? `/api/comment/${id}/user/${user.id}/replie`
+    : `/api/user/${user.id}/comment`
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
