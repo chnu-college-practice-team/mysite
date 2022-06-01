@@ -4,11 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { Session } from 'next-auth'
-import type { Reply } from 'lib/types'
 import fetcher from 'lib/fetcher'
-import { useData } from 'context/useData'
-import type { Comment } from 'lib/types'
 import useSWR from 'swr'
+import { useData } from 'context/useData'
+import type { Comment, Reply } from 'lib/types'
 
 export default function CommentsBlock() {
   const { data: session } = useSession()
@@ -30,8 +29,7 @@ export default function CommentsBlock() {
         {comments &&
           comments.map((comment) => (
             <Comment key={comment.id} data={comment} me={session} />
-          ))}
-      </div>
+          ))} </div>
     </section>
   )
 }
