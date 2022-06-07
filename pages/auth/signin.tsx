@@ -34,7 +34,7 @@ const Signin: NextPage<Props> = ({ providers }) => {
   return (
     <div className="flex h-screen flex-col items-center space-y-8 bg-black pt-40">
       <Head>
-        <title>Login - Spotify</title>
+        <title>Login - Mango</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
