@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const { status, data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/auth/singin')
+      router.push('/auth/signin')
     },
   })
 
