@@ -54,6 +54,15 @@ model User {
   @@map("users")
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
 model Comment {
   id         String   @id @default(cuid())
   createadAt DateTime @default(now())
@@ -64,6 +73,10 @@ model Comment {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   replies Replie[]
+
+  mangaId String? @map("manga_id")
+  manga   Manga?  @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+
   @@map("comments")
 }
 
@@ -83,11 +96,24 @@ model Replie {
   @@map("replies")
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+model Manga {
+  id            String    @id @default(cuid())
+  title         String
+  originalTitle String
+  slug          String    @unique
+  image         String?
+  description   String
+  author        String
+  gener         String
+  releaseDate   DateTime
+  status        String
+  genres        Genre[]
+  Comment       Comment[]
+}
 
-  @@unique([identifier, token])
-  @@map("verificationtokens")
+model Genre {
+  id      String  @id @default(cuid())
+  name    String
+  Manga   Manga?  @relation(fields: [mangaId], references: [id])
+  mangaId String?
 }
