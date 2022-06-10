@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Account {
@@ -104,8 +105,7 @@ model Manga {
   image         String?
   description   String
   author        String
-  gener         String
-  releaseDate   DateTime
+  releaseDate   DateTime 
   status        String
   genres        Genre[]
   Comment       Comment[]
