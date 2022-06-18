@@ -1,13 +1,16 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { LogoutIcon } from '@heroicons/react/outline'
+import { LogoutIcon, CogIcon } from '@heroicons/react/outline'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 export default function Dropdown() {
   const { data: session } = useSession()
   const user = session?.user
+  
+  const router = useRouter()
 
   return (
     <Menu as="div" className="relative flex h-12 w-24 items-center">
@@ -34,6 +37,21 @@ export default function Dropdown() {
       >
         <Menu.Items className="absolute right-0 mt-24 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-[#1A1A1A] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="px-1 py-1 ">
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  className={`${
+                    active && 'bg-white/10'
+                  } group flex w-full cursor-default items-center rounded-md px-2 py-2 text-sm font-semibold tracking-wide text-white`}
+                  onClick={() => {
+                    router.push('/users/me')
+                  }} 
+                >
+                  <CogIcon className="mr-2 h-5 w-5" aria-hidden="true" />
+                  Settings
+                </button>
+              )}
+            </Menu.Item>
             <Menu.Item>
               {({ active }) => (
                 <button
