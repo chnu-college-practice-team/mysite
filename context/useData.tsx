@@ -1,19 +1,21 @@
 import { createContext, useContext } from 'react'
 import fetcher from 'lib/fetcher'
 import useSWR from 'swr'
-import type { User, Manga } from '@prisma/client'
+import type { User, Manga, Genre } from '@prisma/client'
 import type { Comment } from 'lib/types'
 
 interface Data {
   users: User[]
   comments: Comment[]
   mangas: Manga[]
+  genres: Genre[]
 }
 
 const DataContext = createContext<Data>({
   users: [],
   comments: [],
   mangas: [],
+  genres: []
 })
 
 export function DataProvider({ children }) {
@@ -30,12 +32,17 @@ export function DataProvider({ children }) {
     '/api/manga',
     fetcher
   )
+  const { data: dataGenre, error: errorGenre} = useSWR<{ genres: Genre[] }>(
+    '/api/genre',
+    fetcher
+  )
 
-  if (errorUser || errorComment || errorManga) return <>An error has occurred.</>
+  if (errorUser || errorComment || errorManga || errorGenre) return <>An error has occurred.</>
 
   return (
     <DataContext.Provider
-      value={{ users: dataUser.users || [], comments: dataComment.comments || [], mangas: dataManga.mangas || [] }}
+      value={{ users: dataUser?.users || [], comments: dataComment?.comments || [], mangas: dataManga?.mangas || [],
+        genres: dataGenre?.genres || []}}
     >
       {children}
     </DataContext.Provider>
@@ -43,6 +50,6 @@ export function DataProvider({ children }) {
 }
 
 export function useData() {
-  const { users, comments, mangas } = useContext(DataContext)
-  return { users, comments, mangas }
+  const { users, comments, mangas, genres } = useContext(DataContext)
+  return { users, comments, mangas, genres }
 }
