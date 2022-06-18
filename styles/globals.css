@@ -20,7 +20,7 @@
   }
 
   .genre {
-    @apply cursor-default rounded-xl border border-[#484848] bg-[#101010] py-2.5 px-3.5 text-[11px] font-bold text-[#CECECE];
+    @apply cursor-default rounded-xl border border-[#484848] bg-[#101010] py-2.5 px-3.5 text-[14px] font-bold text-[#CECECE];
   }
 
   .btn {

@@ -33,7 +33,7 @@ export function DataProvider({ children }) {
     fetcher
   )
   const { data: dataGenre, error: errorGenre} = useSWR<{ genres: Genre[] }>(
-    '/api/genre',
+    '/api/manga/genre',
     fetcher
   )
 
