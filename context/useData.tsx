@@ -1,17 +1,19 @@
 import { createContext, useContext } from 'react'
 import fetcher from 'lib/fetcher'
 import useSWR from 'swr'
-import type { User } from '@prisma/client'
+import type { User, Manga } from '@prisma/client'
 import type { Comment } from 'lib/types'
 
 interface Data {
   users: User[]
   comments: Comment[]
+  mangas: Manga[]
 }
 
 const DataContext = createContext<Data>({
   users: [],
   comments: [],
+  mangas: [],
 })
 
 export function DataProvider({ children }) {
@@ -24,15 +26,16 @@ export function DataProvider({ children }) {
   }>('/api/comment', fetcher, {
     refreshInterval: 1000,
   })
+  const { data: dataManga, error: errorManga} = useSWR<{ mangas: Manga[] }>(
+    '/api/manga',
+    fetcher
+  )
 
-  const { users } = dataUser || {}
-  const { comments } = dataComment || {}
-
-  if (errorUser || errorComment) return <>An error has occurred.</>
+  if (errorUser || errorComment || errorManga) return <>An error has occurred.</>
 
   return (
     <DataContext.Provider
-      value={{ users: users || [], comments: comments || [] }}
+      value={{ users: dataUser.users || [], comments: dataComment.comments || [], mangas: dataManga.mangas || [] }}
     >
       {children}
     </DataContext.Provider>
@@ -40,6 +43,6 @@ export function DataProvider({ children }) {
 }
 
 export function useData() {
-  const { users, comments } = useContext(DataContext)
-  return { users, comments }
+  const { users, comments, mangas } = useContext(DataContext)
+  return { users, comments, mangas }
 }
