@@ -1,6 +1,6 @@
 import { Dispatch, useState, SetStateAction } from 'react'
 import type { Session } from 'next-auth'
-import { supabase } from 'lib/supabase'
+import { pushToSupabase } from 'lib/pushToSupabase'
 
 type Props = {
   user: Session['user']
@@ -12,22 +12,13 @@ export default function EditForm({ user, setOpened }: Props) {
   const [avatarFile, setAvatarFile] = useState<File | null>()
 
   const onSubmit = async () => {
-    const timestamp = Date.now().toString()
-    const filename = `${user.id}_${timestamp}.${avatarFile.type
-      .split('/')
-      .pop()}`
-    const { data, error } = await supabase.storage
-      .from('avatars')
-      .upload(`public/${filename}`, avatarFile)
-    console.log({ data, error })
-    const image = `${process.env.SUPABASE_URL}/storage/v1/object/public/avatars/public/${filename}`
+    const image = await pushToSupabase(user.id, avatarFile, "avatars")
     fetch(`/api/user/${user.id}`, {
       method: 'PUT',
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, image }),
+      }, body: JSON.stringify({ name, image }),
     })
 
     setOpened(false)
@@ -65,3 +56,4 @@ export default function EditForm({ user, setOpened }: Props) {
     </div>
   )
 }
+
