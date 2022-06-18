@@ -19,7 +19,7 @@ export default function Right() {
         </div>
 
         <div className="h-[250px] space-y-4 overflow-x-hidden overflow-y-scroll md:h-[400px]">
-          {comments.slice(1, 7).map((comment) => (
+          {comments.slice(0, 7).map((comment) => (
             <RecentlyComment key={comment.id} comment={comment} />
           ))}
         </div>
